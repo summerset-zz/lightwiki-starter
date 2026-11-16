@@ -1,0 +1,47 @@
+# 每次 push 到 main 就构建并发布到 GitHub Pages。
+#
+# 首次使用前：仓库 Settings → Pages → Source 选 "GitHub Actions"。
+# 工具从 npm 现取，不需要任何密钥。
+#
+# 项目站点的地址是 `https://<用户名>.github.io/<仓库名>/`，
+# 所以要把子路径通过环境变量告诉站点 —— 否则产物里的链接会指向根目录。
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 构建
+        env:
+          LIGHTWIKI_BASE_PATH: /${{ github.event.repository.name }}/
+        run: npx --yes @lightwiki/cli@^0.1.0 build .
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
