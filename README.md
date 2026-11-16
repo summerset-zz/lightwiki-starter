@@ -1,75 +1,214 @@
 # 我的知识库
 
-用 [轻维基（lightwiki）](https://github.com/summerset-zz/lightwiki) 构建的静态知识库。
+用[轻维基（lightwiki）](https://github.com/summerset-zz/lightwiki)建的知识库。
 
-内容用 markdown + frontmatter 写，构建产物是一组**可移植的静态文件** —— 没有服务器依赖、没有 SPA、没有外部 CDN。
+内容就是 markdown + frontmatter，产物是一组**静态文件** —— 没有服务器依赖、没有 SPA、没有外部 CDN，丢到任何静态托管上就能跑。
 
-## 目录结构
+> 这个仓库来自官方模板 [`lightwiki-starter`](https://github.com/summerset-zz/lightwiki-starter)：
+> 点 **Use this template** 建的，或者用 `npx @lightwiki/cli init` 生成的，结构完全一样。
 
-```
-wiki.config.ts          站点配置（标题、语言、路径）
-content/zh/*.md         内容。文件名就是地址：start.md → /docs/start/
-.github/workflows/      push 到 main 自动构建并发布到 GitHub Pages
-```
+---
 
-## 本地预览
+## 1. 初始化
 
-不用装任何东西：
+选一种，得到的目录结构一模一样。
 
-```bash
-npx @lightwiki/cli dev .      # 打开 http://127.0.0.1:5173
-```
-
-构建：
+### 命令行
 
 ```bash
-npx @lightwiki/cli build .    # 产物在 ./dist
+npx @lightwiki/cli init my-wiki
 ```
 
-想固定工具版本（推荐，CI 里也这样用）：
+用 yarn / pnpm 的话：
 
 ```bash
-npm i -D @lightwiki/cli
-npx wiki dev .
+yarn dlx @lightwiki/cli init my-wiki
+pnpm dlx @lightwiki/cli init my-wiki
 ```
 
-## 部署
+目录已存在也不要紧 —— 只会补上缺的文件，**不会覆盖**你已有的内容；确实要覆盖就加 `--force`。
 
-仓库里已经带了 workflow，**只要在 GitHub 上做一次设置**：
+### GitHub 上点按钮
 
-> Settings → Pages → Source 选 **GitHub Actions**
+打开 [lightwiki-starter](https://github.com/summerset-zz/lightwiki-starter) → **Use this template** → 起个名字。好处是仓库、`main` 分支、Pages 一步到位。
 
-之后每次 push 到 `main` 就会自动构建并部署到 `https://<用户名>.github.io/<仓库名>/`。
+### 生成出来的东西
 
-`basePath` 不用改 —— workflow 会把仓库名通过 `LIGHTWIKI_BASE_PATH` 注入（项目站点挂在 `/<仓库名>/` 子路径下，写错会导致链接全部 404）。绑自定义域名的话，把 `wiki.config.ts` 里的 `basePath` 改回 `/`。
+```
+my-wiki/
+├── wiki.config.ts               站点配置（标题、语言、目录、分组）
+├── content/zh/start.md          内容。文件名就是地址：start.md → /docs/start/
+├── AGENTS.md                    给 AI 助手看的写作说明（见第 2 节）
+├── README.md                    本文件
+└── .github/workflows/pages.yml  push 到 main 就构建并发布到 GitHub Pages
+```
 
-## 改什么
+**没有 `package.json`，也不用 `npm install`。** 内容仓库不需要装任何东西 —— 工具在用的时候现取。
 
-| 想改 | 改哪 |
+### 第一次看到效果
+
+```bash
+cd my-wiki
+npx @lightwiki/cli dev .
+```
+
+打开 <http://127.0.0.1:5173> 。改 `content/zh/start.md`，浏览器会自动刷新。
+
+---
+
+## 2. 写内容
+
+### 文档放在哪
+
+`content/zh/` 下面，一个 `.md` 一页。
+
+**文件名就是地址**，和标题无关：
+
+| 文件 | 地址 |
 |---|---|
-| 站点名 | `wiki.config.ts` 的 `title` |
-| 站点地址 | `wiki.config.ts` 的 `siteUrl` |
-| 加一门语言 | 建 `content/en/`，在 `content` 里加一行 |
-| 加页面 | `content/zh/<slug>.md`，文件名就是 URL |
-| 图片 | `assets/`，正文写 `![说明](/assets/图.png)` |
-| 自定义样式 | `assets/*.less` 或 `assets/*.css` |
-| 覆盖主题布局 | `layouts/*.eta` |
-| 自定义宏 | `macros/*.eta` |
+| `content/zh/start.md` | `/docs/start/` |
+| `content/zh/字体术语/index.md` | `/docs/字体术语/` |
 
-页面开头的 frontmatter 是最重要的部分：
+想把 `start.md` 改名成 `intro.md`，地址就跟着变成 `/docs/intro/` —— **旧链接会断**。所以：改文件名等于改地址，记得同步改指向它的链接；改 `title` 则是安全的。
+
+`/docs/` 是自动生成的目录页，不用手写。
+
+### frontmatter
+
+每页开头一段 `---` 包住的 YAML，决定这页怎么被索引、排在侧栏哪里：
 
 ```yaml
 ---
-title: 页面标题        # 必填，双链 [[标题]] 靠它
-description: 一句话摘要
-keywords: 关键词, keyword
-section: guide         # 侧栏分组，要和 config 里的 sections 对应
-order: 1               # 组内排序
-updated: 2026-11-16
+title: 页面标题          # 必填。双链 [[页面标题]] 靠它找到这一页
+description: 一句话摘要   # 搜索结果与 <meta> 里用
+keywords: 关键词, keyword # 逗号分隔或数组都行，搜索时权重高于正文
+section: guide           # 侧栏分组，取值要和 wiki.config.ts 的 sections 一致
+order: 1                 # 组内排序，小的在前
+updated: 2026-11-16      # 只接受 YYYY-MM-DD
+draft: false             # true 则构建时不产出这一页
 ---
 ```
 
-完整字段与语法见**语法手册**：https://summerset-zz.github.io/lightwiki/
+其余字段（`categories`、`sidebarCategory`、`hint`、`source*`、`license*`）见语法手册的「frontmatter」一页。
+
+`section` 写错了构建不会失败，但 `wiki check` 会点名告诉你 —— 提交前跑一次：
+
+```bash
+npx @lightwiki/cli check .
+```
+
+### 会什么语法
+
+正文是 markdown，在此之上多了几样：
+
+- **双链** —— `[[页面标题]]` 或 `[[slug]]`，也可以 `[[页面|显示文字]]`
+- **宏** —— `{{note}}…{{/note}}`，自带 `note` / `card` / `glossary` 等
+- **锚点** —— `## 小节 {#anchor}`，会进页内目录
+- **属性** —— `![](/assets/x.png){.wide}`，零散地给元素加 class
+- 代码高亮、表格、脚注、任务列表
+
+完整语法、每个宏的用法、布局能改哪几处：**语法手册 <https://summerset-zz.github.io/lightwiki/>**
+
+### 让 AI 帮你写
+
+仓库根的 **`AGENTS.md`** 就是给 AI 助手的说明书（内容约定、frontmatter 字段、可用语法、构建命令）。
+
+GitHub Copilot、Cursor、Codex 这类工具会自动读它，你什么都不用做。如果用的工具不自动读，把 `AGENTS.md` 的内容贴进对话开头即可。
+
+### 想改样式 / 布局
+
+| 想改 | 放哪 |
+|---|---|
+| 站点名、语言、分组 | `wiki.config.ts` |
+| 图片 | `assets/`，正文写 `![说明](/assets/图.png)` |
+| 自定义样式 | `assets/*.css` 或 `assets/*.less` |
+| 覆盖某个页面的布局 | `layouts/doc.eta` 等，只写要改的那个 |
+| 自定义宏 | `macros/note.eta` 等 |
+
+布局和宏都是**可选的**：不建这些目录就用默认主题；建了也只覆盖你写的那几个，升级工具时不会被冲掉。
+
+---
+
+## 3. 构建
+
+```bash
+npx @lightwiki/cli build .      # 产物在 ./dist
+```
+
+产物长这样：
+
+```
+dist/
+├── index.html                  首页（跳到默认语言）
+├── docs/index.html             目录页
+├── docs/start/index.html       每一页
+├── categories/…                分类页
+├── assets/                     样式、脚本
+└── meta.json / sitemap.xml     给搜索与爬虫
+```
+
+影响地址形态的开关（`basePath`、`urlStyle`）都在 `wiki.config.ts` 里，默认是目录式（`/docs/start/`），适合所有静态托管。
+
+几个常用变体：
+
+```bash
+npx @lightwiki/cli build . --inline    # 内联样式与图片，产物只剩 .html（适合单文件分发）
+npx @lightwiki/cli build . -o out      # 换输出目录
+```
+
+### 固定工具版本
+
+CI 里建议钉版本，本地反复构建也建议：
+
+```bash
+npm i -D @lightwiki/cli     # 或者 yarn add -D @lightwiki/cli
+npx wiki build .            # 装成依赖后命令就叫 wiki
+```
+
+不想装依赖就一直用 `npx @lightwiki/cli@^0.1.0 build .`。
+
+---
+
+## 4. 发布到 GitHub Pages
+
+仓库里已经带了 workflow，**只需要在 GitHub 上做一次设置**：
+
+> Settings → Pages → **Source** 选 **GitHub Actions**
+
+之后每次 push 到 `main` 就自动构建并部署到 `https://<用户名>.github.io/<仓库名>/`。
+
+### basePath 为什么不用改
+
+项目站点挂在 `/<仓库名>/` 子路径下，产物里的链接必须带这个前缀，否则整站 404。
+
+`wiki.config.ts` 里写的是：
+
+```ts
+basePath: env.LIGHTWIKI_BASE_PATH ?? '/',
+```
+
+workflow 会把仓库名注入进去：
+
+```yaml
+- name: 构建
+  env:
+    LIGHTWIKI_BASE_PATH: /${{ github.event.repository.name }}/
+  run: npx --yes @lightwiki/cli@^0.1.0 build .
+```
+
+所以本地是 `/`，线上自动变成 `/你的仓库名/` —— **仓库改名也不用动配置**。
+
+### 换成自己的域名
+
+1. `wiki.config.ts` 里把 `basePath` 改回 `'/'`，`siteUrl` 改成正式地址
+2. 仓库 Settings → Pages → Custom domain 填域名
+3. 把 workflow 里 `LIGHTWIKI_BASE_PATH` 那两行删掉
+
+### 部署失败怎么看
+
+Actions 页面看 `Pages` 这个 workflow。构建步骤会直接给出原因 —— 最常见的是忘了第 4 节开头那一步设置（Source 没选成 GitHub Actions）。
+
+---
 
 ## 许可
 
