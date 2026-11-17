@@ -37,7 +37,7 @@ jobs:
       - name: 构建
         env:
           LIGHTWIKI_BASE_PATH: /${{ github.event.repository.name }}/
-        run: npx --yes @lightwiki/cli@^0.1.0 build .
+        run: npx --yes @lightwiki/cli build .
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

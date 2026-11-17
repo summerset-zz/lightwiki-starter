@@ -170,7 +170,9 @@ npm i -D @lightwiki/cli     # 或者 yarn add -D @lightwiki/cli
 npx wiki build .            # 装成依赖后命令就叫 wiki
 ```
 
-不想装依赖就一直用 `npx @lightwiki/cli@^0.1.0 build .`。
+不想装依赖就一直用 `npx @lightwiki/cli build .`（不写版本就是 latest）。
+
+> 0.x 阶段别写 `@^0.1.0` 这种锁 —— semver 里 `^0.1.0` 只覆盖 `0.1.x`，升级到 0.2 就失效了。要锁版本就装成依赖（`npm i -D @lightwiki/cli`），锁在 `package.json` 里。
 
 ---
 
@@ -198,7 +200,7 @@ workflow 会把仓库名注入进去：
 - name: 构建
   env:
     LIGHTWIKI_BASE_PATH: /${{ github.event.repository.name }}/
-  run: npx --yes @lightwiki/cli@^0.1.0 build .
+  run: npx --yes @lightwiki/cli build .
 ```
 
 所以本地是 `/`，线上自动变成 `/你的仓库名/` —— **仓库改名也不用动配置**。
