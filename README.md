@@ -123,7 +123,10 @@ GitHub Copilot、Cursor、Codex 这类工具会自动读它，你什么都不用
 | 图片 | `assets/`，正文写 `![说明](/assets/图.png)` |
 | 自定义样式 | `assets/*.css` 或 `assets/*.less` |
 | 覆盖某个页面的布局 | `layouts/doc.eta` 等，只写要改的那个 |
+| 让某一页用别的布局 | 该页 frontmatter 写 `layout: landing`，再建 `layouts/landing.eta` |
 | 自定义宏 | `macros/note.eta` 等 |
+
+布局就是完整的 HTML 骨架，`<style>` 与 `<script>` 都可以直接写在里面；换了布局之后能用的数据仍然是 `page` / `site` / `nav` 那一套。
 
 布局和宏都是**可选的**：不建这些目录就用默认主题；建了也只覆盖你写的那几个，升级工具时不会被冲掉。
 
