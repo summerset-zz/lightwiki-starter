@@ -2,7 +2,7 @@
 
 用[轻维基（lightwiki）](https://github.com/summerset-zz/lightwiki)建的知识库。
 
-内容就是 markdown + frontmatter，产物是一组**静态文件** —— 没有服务器依赖、没有 SPA、没有外部 CDN，丢到任何静态托管上就能跑。
+内容就是 markdown + frontmatter，产物是一组**静态文件**：没有服务器依赖、没有 SPA、没有外部 CDN，丢到任何静态托管上就能跑。
 
 > 这个仓库来自官方模板 [`lightwiki-starter`](https://github.com/summerset-zz/lightwiki-starter)：
 > 点 **Use this template** 建的，或者用 `npx @lightwiki/cli init` 生成的，结构完全一样。
@@ -26,7 +26,7 @@ yarn dlx @lightwiki/cli init my-wiki
 pnpm dlx @lightwiki/cli init my-wiki
 ```
 
-目录已存在也不要紧 —— 只会补上缺的文件，**不会覆盖**你已有的内容；确实要覆盖就加 `--force`。
+目录已存在也不要紧，只会补上缺的文件，**不会覆盖**你已有的内容；确实要覆盖就加 `--force`。
 
 ### GitHub 上点按钮
 
@@ -43,7 +43,7 @@ my-wiki/
 └── .github/workflows/pages.yml  push 到 main 就构建并发布到 GitHub Pages
 ```
 
-**没有 `package.json`，也不用 `npm install`。** 内容仓库不需要装任何东西 —— 工具在用的时候现取。
+**没有 `package.json`，也不用 `npm install`。** 内容仓库不需要装任何东西，工具在用的时候现取。
 
 ### 第一次看到效果
 
@@ -69,7 +69,7 @@ npx @lightwiki/cli dev .
 | `content/zh/index.md` | `/docs/`（**首页**） |
 | `content/zh/标准/术语.md` | `/docs/标准/术语/` |
 
-`index.md` 就是首页 —— 没有「自动生成的目录页」这回事，目录写什么由你决定（正文里放 `{{catalog}}` 或 `{{pages(section: ...)}}` 就会列出来）。**每种语言都得有一个 `index.md`**，缺了那个语言的首页会 404。
+`index.md` 就是首页。没有自动生成的目录页这回事，目录写什么由你决定（正文里放 `{{catalog}}` 或 `{{pages(section: ...)}}` 就会列出来）。**每种语言都得有一个 `index.md`**，缺了那个语言的首页会 404。
 
 想把 `index.md` 改名成 `home.md`，地址就跟着变成 `/docs/home/`，而 `/docs/` 会没人管（构建能过，但 `wiki check` 会报缺首页）。所以：改文件名等于改地址。
 
@@ -89,9 +89,9 @@ draft: false             # true 则构建时不产出这一页
 ---
 ```
 
-其余字段（`categories`、`sidebarCategory`、`hint`、`source*`、`license*`）见语法手册的「frontmatter」一页。
+其余字段（`categories`、`sidebarCategory`、`hint`、`source*`、`license*`）见主站文档的 frontmatter 一页。
 
-`section` 写错了构建不会失败，但 `wiki check` 会点名告诉你 —— 提交前跑一次：
+`section` 写错了构建不会失败，但 `wiki check` 会点名告诉你。提交前跑一次：
 
 ```bash
 npx @lightwiki/cli check .
@@ -101,13 +101,13 @@ npx @lightwiki/cli check .
 
 正文是 markdown，在此之上多了几样：
 
-- **双链** —— `[[页面标题]]` 或 `[[slug]]`，也可以 `[[页面|显示文字]]`
-- **宏** —— `{{note}}…{{/note}}`，自带 `note` / `card` / `glossary` 等
-- **锚点** —— `## 小节 {#anchor}`，会进页内目录
-- **属性** —— `![](/assets/x.png){.wide}`，零散地给元素加 class
+- **双链**：`[[页面标题]]` 或 `[[slug]]`，也可以 `[[页面|显示文字]]`
+- **模板**：`{{catalog}}`、`{{pages(section: guide)}}` 是主题自带的两个；其它要自己写，放在 `macros/`
+- **锚点**：`## 小节 {#anchor}`，会进页内目录
+- **属性**：`![](/assets/x.png){.my-class}`，给元素加 class（class 只是加到元素上，样式要自己写）
 - 代码高亮、表格、脚注、任务列表
 
-完整语法、每个宏的用法、布局能改哪几处：**语法手册 <https://summerset-zz.github.io/lightwiki/>**
+完整语法、模板怎么写、皮肤能改哪几处：**主站文档 <https://summerset-zz.github.io/lightwiki/>**
 
 ### 让 AI 帮你写
 
@@ -115,21 +115,21 @@ npx @lightwiki/cli check .
 
 GitHub Copilot、Cursor、Codex 这类工具会自动读它，你什么都不用做。如果用的工具不自动读，把 `AGENTS.md` 的内容贴进对话开头即可。
 
-### 想改样式 / 布局
+### 想改样式 / 皮肤
 
 | 想改 | 放哪 |
 |---|---|
 | 站点名、语言、分组 | `wiki.config.ts` |
 | 图片 | `assets/`，正文写 `![说明](/assets/图.png)` |
 | 自定义样式 | `assets/*.css` 或 `assets/*.less` |
-| 覆盖某个页面的布局 | `layouts/doc.eta` 等，只写要改的那个 |
-| 让某一页用别的布局 | 该页 frontmatter 写 `layout: landing`，再建 `layouts/landing.eta` |
+| 覆盖某个页面的皮肤 | `layouts/doc.eta` 等，只写要改的那个 |
+| 让某一页用别的皮肤 | 该页 frontmatter 写 `layout: landing`，再建 `layouts/landing.eta` |
 | 给某一页单独挂样式/脚本 | 该页 frontmatter 写 `styles: [x.css]` / `scripts: [x.js]`，文件放 `assets/` |
-| 自定义宏 | `macros/note.eta` 等 |
+| 自定义模板 | `macros/note.eta` 等 |
 
-布局就是完整的 HTML 骨架，`<style>` 与 `<script>` 都可以直接写在里面；换了布局之后能用的数据仍然是 `page` / `site` / `nav` 那一套。
+皮肤就是完整的 HTML 骨架，`<style>` 与 `<script>` 都可以直接写在里面；换了皮肤之后能用的数据仍然是 `page` / `site` / `nav` 那一套。
 
-布局和宏都是**可选的**：不建这些目录就用默认主题；建了也只覆盖你写的那几个，升级工具时不会被冲掉。
+皮肤和模板都是**可选的**：不建这些目录就用默认主题；建了也只覆盖你写的那几个，升级工具时不会被冲掉。
 
 ---
 
@@ -174,7 +174,7 @@ npx wiki build .            # 装成依赖后命令就叫 wiki
 不想装依赖就一直用 `npx @lightwiki/cli@0.3.0 build .`。
 
 > 版本号建议**写死**（CI 里也一样），构建才是可复现的；升级工具时改这一处就行。
-> 别写成 `^0.3.0` —— 0.x 的 caret 只覆盖 `0.3.x`，下个 minor 就取不到了（这个坑踩过）。
+> 别写成 `^0.3.0`：0.x 的 caret 只覆盖 `0.3.x`，下个 minor 就取不到了（这个坑踩过）。
 > 想在本地锁定，就 `npm i -D @lightwiki/cli`，版本锁在 `package.json` 里。
 
 ---
@@ -206,7 +206,7 @@ workflow 会把仓库名注入进去：
   run: npx --yes @lightwiki/cli@0.3.0 build .
 ```
 
-所以本地是 `/`，线上自动变成 `/你的仓库名/` —— **仓库改名也不用动配置**。
+所以本地是 `/`，线上自动变成 `/你的仓库名/`，**仓库改名也不用动配置**。
 
 ### 换成自己的域名
 
@@ -216,7 +216,7 @@ workflow 会把仓库名注入进去：
 
 ### 部署失败怎么看
 
-Actions 页面看 `Pages` 这个 workflow。构建步骤会直接给出原因 —— 最常见的是忘了第 4 节开头那一步设置（Source 没选成 GitHub Actions）。
+Actions 页面看 `Pages` 这个 workflow。构建步骤会直接给出原因。最常见的是忘了第 4 节开头那一步设置（Source 没选成 GitHub Actions）。
 
 ---
 
