@@ -37,7 +37,7 @@ pnpm dlx @lightwiki/cli init my-wiki
 ```
 my-wiki/
 ├── wiki.config.ts               站点配置（标题、语言、目录、分组）
-├── content/zh/start.md          内容。文件名就是地址：start.md → /docs/start/
+├── content/zh/index.md          首页（就是 /docs/），也可以再添别的页
 ├── AGENTS.md                    给 AI 助手看的写作说明（见第 2 节）
 ├── README.md                    本文件
 └── .github/workflows/pages.yml  push 到 main 就构建并发布到 GitHub Pages
@@ -52,7 +52,7 @@ cd my-wiki
 npx @lightwiki/cli dev .
 ```
 
-打开 <http://127.0.0.1:5173> 。改 `content/zh/start.md`，浏览器会自动刷新。
+打开 <http://127.0.0.1:5173> 。改 `content/zh/index.md`，浏览器会自动刷新。
 
 ---
 
@@ -66,10 +66,12 @@ npx @lightwiki/cli dev .
 
 | 文件 | 地址 |
 |---|---|
-| `content/zh/start.md` | `/docs/start/` |
-| `content/zh/字体术语/index.md` | `/docs/字体术语/` |
+| `content/zh/index.md` | `/docs/`（**首页**） |
+| `content/zh/标准/术语.md` | `/docs/标准/术语/` |
 
-想把 `start.md` 改名成 `intro.md`，地址就跟着变成 `/docs/intro/` —— **旧链接会断**。所以：改文件名等于改地址，记得同步改指向它的链接；改 `title` 则是安全的。
+`index.md` 就是首页 —— 没有「自动生成的目录页」这回事，目录写什么由你决定（正文里放 `{{catalog}}` 或 `{{pages(section: ...)}}` 就会列出来）。**每种语言都得有一个 `index.md`**，缺了那个语言的首页会 404。
+
+想把 `index.md` 改名成 `home.md`，地址就跟着变成 `/docs/home/`，而 `/docs/` 会没人管（构建能过，但 `wiki check` 会报缺首页）。所以：改文件名等于改地址。
 
 `/docs/` 是自动生成的目录页，不用手写。
 
