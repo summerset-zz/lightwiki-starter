@@ -45,7 +45,10 @@ draft: false
 - `title` 必填且不能为空；双链 `[[标题]]` 靠它解析，**同一语言内标题不能重复**。
 - `updated` 只接受 `YYYY-MM-DD`，写成 `2026/11/16` 会导致这一页被跳过。
 - 未知字段会被放行（不报错），但不要凭空发明字段。
-- 可选字段：`layout`（换这一页的布局，见下文）、`categories`、`sidebarCategory`、`hintTitle`/`hint`、`source*`、`license*`。
+- 可选字段：`layout`（换这一页的皮肤）、`styles` / `scripts`（单独挂 css/js，相对 `assets/`）、
+  `categories`、`sidebarCategory`、`hintTitle`/`hint`、`source*`、`license*`。
+
+脚本要 ES module 就写成 `scripts: [{ src: x.js, module: true }]`，两种写法可以混用。
 
 `layout: landing` 会让这一页改用 `layouts/landing.eta`（不写就是 `doc`）。布局名只能是一段文件名，文件不存在时构建直接报错；换布局不换数据，布局里能用的仍是 `page` / `site` / `nav` / `sidebar` / `index`。
 
