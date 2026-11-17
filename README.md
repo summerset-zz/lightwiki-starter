@@ -7,6 +7,8 @@
 > 这个仓库来自官方模板 [`lightwiki-starter`](https://github.com/summerset-zz/lightwiki-starter)：
 > 点 **Use this template** 建的，或者用 `npx @lightwiki/cli init` 生成的，结构完全一样。
 
+主站文档在 <https://summerset-zz.github.io/lightwiki/>。这份 README 只讲怎么开始；语法、字段、皮肤这些细节会随时增补，以主站为准。
+
 ---
 
 ## 1. 初始化
@@ -75,21 +77,19 @@ npx @lightwiki/cli dev .
 
 ### frontmatter
 
-每页开头一段 `---` 包住的 YAML，决定这页怎么被索引、排在侧栏哪里：
+每页开头一段 `---` 包住的 YAML。只有 `title` 是必填的：
 
 ```yaml
 ---
-title: 页面标题          # 必填。双链 [[页面标题]] 靠它找到这一页
-description: 一句话摘要   # 搜索结果与 <meta> 里用
-keywords: 关键词, keyword # 逗号分隔或数组都行，搜索时权重高于正文
-section: guide           # 侧栏分组，取值要和 wiki.config.ts 的 sections 一致
-order: 1                 # 组内排序，小的在前
-updated: 2026-11-16      # 只接受 YYYY-MM-DD
-draft: false             # true 则构建时不产出这一页
+title: 页面标题
+section: guide
 ---
 ```
 
-其余字段（`categories`、`sidebarCategory`、`hint`、`source*`、`license*`）见主站文档的 frontmatter 一页。
+其余字段（`description`、`keywords`、`order`、`updated`、`draft`、`layout`、`styles`、`scripts`、`categories` 等）与各自的写法见主站：
+
+- frontmatter 全部字段 <https://summerset-zz.github.io/lightwiki/docs/basics/frontmatter/>
+- 正文语法 <https://summerset-zz.github.io/lightwiki/docs/basics/markdown/>
 
 `section` 写错了构建不会失败，但 `wiki check` 会点名告诉你。提交前跑一次：
 
@@ -99,15 +99,9 @@ npx @lightwiki/cli check .
 
 ### 会什么语法
 
-正文是 markdown，在此之上多了几样：
+正文是 markdown，在此之上多了几样：双链 `[[页面标题]]`、模板 `{{名字(...)}}`、显式锚点 `## 小节 {#anchor}`、给元素加 class（`![](/assets/x.png){.my-class}`）。代码块带语言名就会高亮。
 
-- **双链**：`[[页面标题]]` 或 `[[slug]]`，也可以 `[[页面|显示文字]]`
-- **模板**：`{{catalog}}`、`{{pages(section: guide)}}` 是主题自带的两个；其它要自己写，放在 `macros/`
-- **锚点**：`## 小节 {#anchor}`，会进页内目录
-- **属性**：`![](/assets/x.png){.my-class}`，给元素加 class（class 只是加到元素上，样式要自己写）
-- 代码高亮、表格、脚注、任务列表
-
-完整语法、模板怎么写、皮肤能改哪几处：**主站文档 <https://summerset-zz.github.io/lightwiki/>**
+模板、皮肤、分类、页面级样式与脚本这些都有单独一页，入口在上面的主站地址里。
 
 ### 让 AI 帮你写
 
@@ -120,16 +114,13 @@ GitHub Copilot、Cursor、Codex 这类工具会自动读它，你什么都不用
 | 想改 | 放哪 |
 |---|---|
 | 站点名、语言、分组 | `wiki.config.ts` |
-| 图片 | `assets/`，正文写 `![说明](/assets/图.png)` |
-| 自定义样式 | `assets/*.css` 或 `assets/*.less` |
-| 覆盖某个页面的皮肤 | `layouts/doc.eta` 等，只写要改的那个 |
-| 让某一页用别的皮肤 | 该页 frontmatter 写 `layout: landing`，再建 `layouts/landing.eta` |
-| 给某一页单独挂样式/脚本 | 该页 frontmatter 写 `styles: [x.css]` / `scripts: [x.js]`，文件放 `assets/` |
-| 自定义模板 | `macros/note.eta` 等 |
+| 图片与自定义样式 | `assets/`，正文写 `![说明](/assets/图.png)` |
+| 版面 | 建 `layouts/<名字>.eta`，该页 frontmatter 写 `layout: 名字` |
+| 正文里反复出现的结构 | 建 `macros/<名字>.eta`，正文写 `{{名字(...)}}` |
 
-皮肤就是完整的 HTML 骨架，`<style>` 与 `<script>` 都可以直接写在里面；换了皮肤之后能用的数据仍然是 `page` / `site` / `nav` 那一套。
+皮肤是一整页 HTML，模板是产出 markdown 的片段，两者都是**可选**的：不建这些目录就用默认主题；建了也只覆盖你写的那几个，升级工具时不会被冲掉。
 
-皮肤和模板都是**可选的**：不建这些目录就用默认主题；建了也只覆盖你写的那几个，升级工具时不会被冲掉。
+写法与能用的数据见主站：皮肤 <https://summerset-zz.github.io/lightwiki/docs/basics/skins/>，模板 <https://summerset-zz.github.io/lightwiki/docs/basics/templates/>。
 
 ---
 
