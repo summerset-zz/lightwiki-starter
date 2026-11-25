@@ -17,7 +17,7 @@
 
 ```
 wiki.config.ts     站点配置
-content/zh/*.md    内容，一个文件一页
+content/*.md    内容，一个文件一页
 assets/            （可选）图片、自定义样式
 layouts/           （可选）覆盖主题的皮肤，只写要改的那几个 .eta
 macros/            （可选）自定义模板
@@ -25,9 +25,9 @@ macros/            （可选）自定义模板
 
 ## 硬规则
 
-1. **页面身份是文件名（slug），不是标题。** `content/zh/start.md` → `/docs/start/`。
+1. **页面身份是文件名（slug），不是标题。** `content/start.md` → `/start/`。
    改文件名等于改地址，会让外部链接和内部 `[[...]]` 失效；改 `title` 只影响显示。
-2. **每种语言都必须有 `content/<语言>/index.md`**。它就是首页 `/docs/`，没有自动生成的目录页。
+2. **内容目录里必须有 `index.md`**。它就是首页 `/`，没有自动生成的目录页。
    缺了首页，`wiki check` 直接报错。
 3. **不要给这个仓库加 `package.json` 或安装依赖**，除非用户明确要求（那是高级用法）。
 4. **不要删 `content/` 里没有要求的文件**，也不要批量重命名。
@@ -38,7 +38,7 @@ macros/            （可选）自定义模板
 
 | 字段 | 必填 | 说明 |
 |---|---|---|
-| `title` | **是** | 非空。进页面标题、侧栏、搜索与双链解析。同一语言内不能重复 |
+| `title` | **是** | 非空。进页面标题、侧栏、搜索与双链解析。不能重复 |
 | `description` | 否 | 一句话摘要，进 `<meta name="description">` |
 | `keywords` | 否 | 逗号分隔或数组，进 meta 与搜索索引 |
 | `section` | 否 | 侧栏分组。取值必须在 `wiki.config.ts` 的 `sections` 里，否则 `check` 报错 |
@@ -63,7 +63,7 @@ macros/            （可选）自定义模板
 | 写法 | 作用 |
 |---|---|
 | `[[页面标题]]` / `[[slug]]` / `[[目标\|显示文字]]` | 双链，构建时转成真实链接 |
-| `{{catalog}}` | 主题自带：所有分类的列表，带当前语言的篇数 |
+| `{{catalog}}` | 主题自带：所有分类的列表，带每个分类的篇数 |
 | `{{pages(section: guide)}}` | 主题自带：某分组下的页面列表（也支持 `category: xxx`） |
 | `{{name(...)}}` | 自定义模板，定义在 `macros/*.eta`。见下面的模板一节 |
 | `## 小节 {#anchor}` | 显式锚点，会进页内目录 |
@@ -132,7 +132,7 @@ macros/            （可选）自定义模板
 
 ```bash
 npx @lightwiki/cli dev .            # 本地预览，默认 http://127.0.0.1:5173，Ctrl+C 停
-npx @lightwiki/cli check .          # 只校验，不写盘（红链、孤页、frontmatter、缺译）
+npx @lightwiki/cli check .          # 只校验，不写盘（红链、孤页、frontmatter）
 npx @lightwiki/cli build .          # 产物在 ./dist
 npx @lightwiki/cli check . --strict # 红链与孤页也算失败
 ```
@@ -145,18 +145,18 @@ npx @lightwiki/cli check . --strict # 红链与孤页也算失败
 
 | 内容 | 地址 |
 |---|---|
-| frontmatter 全部字段 | <https://summerset-zz.github.io/lightwiki/docs/basics/frontmatter/> |
-| 正文语法（双链、锚点、HTML、class） | <https://summerset-zz.github.io/lightwiki/docs/basics/markdown/> |
-| 模板 | <https://summerset-zz.github.io/lightwiki/docs/basics/templates/> |
-| 皮肤 | <https://summerset-zz.github.io/lightwiki/docs/basics/skins/> |
-| 样式与 Less | <https://summerset-zz.github.io/lightwiki/docs/basics/styles/> |
-| JavaScript | <https://summerset-zz.github.io/lightwiki/docs/basics/javascript/> |
-| 静态资源 | <https://summerset-zz.github.io/lightwiki/docs/basics/assets/> |
-| 分类 | <https://summerset-zz.github.io/lightwiki/docs/basics/categories/> |
-| 代码高亮 | <https://summerset-zz.github.io/lightwiki/docs/basics/code-highlight/> |
-| 站点配置 | <https://summerset-zz.github.io/lightwiki/docs/advanced/config/> |
-| 命令行 | <https://summerset-zz.github.io/lightwiki/docs/advanced/cli/> |
-| 发布到 GitHub Pages | <https://summerset-zz.github.io/lightwiki/docs/advanced/deploy-pages/> |
-| 引用外部库 | <https://summerset-zz.github.io/lightwiki/docs/advanced/external-libs/> |
+| frontmatter 全部字段 | <https://summerset-zz.github.io/lightwiki/basics/frontmatter/> |
+| 正文语法（双链、锚点、HTML、class） | <https://summerset-zz.github.io/lightwiki/basics/markdown/> |
+| 模板 | <https://summerset-zz.github.io/lightwiki/basics/templates/> |
+| 皮肤 | <https://summerset-zz.github.io/lightwiki/basics/skins/> |
+| 样式与 Less | <https://summerset-zz.github.io/lightwiki/basics/styles/> |
+| JavaScript | <https://summerset-zz.github.io/lightwiki/basics/javascript/> |
+| 静态资源 | <https://summerset-zz.github.io/lightwiki/basics/assets/> |
+| 分类 | <https://summerset-zz.github.io/lightwiki/basics/categories/> |
+| 代码高亮 | <https://summerset-zz.github.io/lightwiki/basics/code-highlight/> |
+| 站点配置 | <https://summerset-zz.github.io/lightwiki/advanced/config/> |
+| 命令行 | <https://summerset-zz.github.io/lightwiki/advanced/cli/> |
+| 发布到 GitHub Pages | <https://summerset-zz.github.io/lightwiki/advanced/deploy-pages/> |
+| 引用外部库 | <https://summerset-zz.github.io/lightwiki/advanced/external-libs/> |
 
 不确定某个模板、某个 frontmatter 字段怎么用时，先查上面这些页，不要猜。

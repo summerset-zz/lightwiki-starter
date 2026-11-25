@@ -39,7 +39,7 @@ pnpm dlx @lightwiki/cli init my-wiki
 ```
 my-wiki/
 ├── wiki.config.ts               站点配置（标题、语言、目录、分组）
-├── content/zh/index.md          首页（就是 /docs/），也可以再添别的页
+├── content/index.md          首页（就是 /），也可以再添别的页
 ├── AGENTS.md                    给 AI 助手看的写作说明（见第 2 节）
 ├── README.md                    本文件
 └── .github/workflows/pages.yml  push 到 main 就构建并发布到 GitHub Pages
@@ -54,7 +54,7 @@ cd my-wiki
 npx @lightwiki/cli dev .
 ```
 
-打开 <http://127.0.0.1:5173> 。改 `content/zh/index.md`，浏览器会自动刷新。
+打开 <http://127.0.0.1:5173> 。改 `content/index.md`，浏览器会自动刷新。
 
 ---
 
@@ -62,18 +62,18 @@ npx @lightwiki/cli dev .
 
 ### 文档放在哪
 
-`content/zh/` 下面，一个 `.md` 一页。
+`content/` 下面，一个 `.md` 一页。
 
 **文件名就是地址**，和标题无关：
 
 | 文件 | 地址 |
 |---|---|
-| `content/zh/index.md` | `/docs/`（**首页**） |
-| `content/zh/标准/术语.md` | `/docs/标准/术语/` |
+| `content/index.md` | `/`（**首页**） |
+| `content/标准/术语.md` | `/标准/术语/` |
 
-`index.md` 就是首页。没有自动生成的目录页这回事，目录写什么由你决定（正文里放 `{{catalog}}` 或 `{{pages(section: ...)}}` 就会列出来）。**每种语言都得有一个 `index.md`**，缺了那个语言的首页会 404。
+`index.md` 就是首页。没有自动生成的目录页这回事，目录写什么由你决定（正文里放 `{{catalog}}` 或 `{{pages(section: ...)}}` 就会列出来）。内容目录里必须有 `index.md`，缺了首页 `wiki check` 会报错。
 
-想把 `index.md` 改名成 `home.md`，地址就跟着变成 `/docs/home/`，而 `/docs/` 会没人管（构建能过，但 `wiki check` 会报缺首页）。所以：改文件名等于改地址。
+想把 `index.md` 改名成 `home.md`，地址就跟着变成 `/home/`，而 `/` 会没人管（构建能过，但 `wiki check` 会报缺首页）。所以：改文件名等于改地址。
 
 ### frontmatter
 
@@ -88,8 +88,8 @@ section: guide
 
 其余字段（`description`、`keywords`、`order`、`updated`、`draft`、`layout`、`styles`、`scripts`、`categories` 等）与各自的写法见主站：
 
-- frontmatter 全部字段 <https://summerset-zz.github.io/lightwiki/docs/basics/frontmatter/>
-- 正文语法 <https://summerset-zz.github.io/lightwiki/docs/basics/markdown/>
+- frontmatter 全部字段 <https://summerset-zz.github.io/lightwiki/basics/frontmatter/>
+- 正文语法 <https://summerset-zz.github.io/lightwiki/basics/markdown/>
 
 `section` 写错了构建不会失败，但 `wiki check` 会点名告诉你。提交前跑一次：
 
@@ -120,7 +120,7 @@ GitHub Copilot、Cursor、Codex 这类工具会自动读它，你什么都不用
 
 皮肤是一整页 HTML，模板是产出 markdown 的片段，两者都是**可选**的：不建这些目录就用默认主题；建了也只覆盖你写的那几个，升级工具时不会被冲掉。
 
-写法与能用的数据见主站：皮肤 <https://summerset-zz.github.io/lightwiki/docs/basics/skins/>，模板 <https://summerset-zz.github.io/lightwiki/docs/basics/templates/>。
+写法与能用的数据见主站：皮肤 <https://summerset-zz.github.io/lightwiki/basics/skins/>，模板 <https://summerset-zz.github.io/lightwiki/basics/templates/>。
 
 ---
 
@@ -134,17 +134,16 @@ npx @lightwiki/cli build .      # 产物在 ./dist
 
 ```
 dist/
-├── index.html                  一行跳转，进默认语言首页
+├── index.html                  首页（来自 content/index.md）
 ├── 404.html                    静态托管约定的 404 页（没有 404.md 时用主题的兑底页）
-├── docs/index.html             首页（来自 content/zh/index.md）
-├── docs/start/index.html       其余每一页，一页一个目录
+├── start/index.html            其余每一页，一页一个目录
 ├── categories/…                页面写了 categories 才有这一层
 ├── assets/                     样式、脚本、图片
 ├── meta.json                   构建时间、页数、产物形态
 └── search-index.json           站内搜索的索引
 ```
 
-影响地址形态的开关（`basePath`、`urlStyle`）都在 `wiki.config.ts` 里，默认是目录式（`/docs/start/`），适合所有静态托管。
+影响地址形态的开关（`basePath`、`urlStyle`）都在 `wiki.config.ts` 里，默认是目录式（`/start/`），适合所有静态托管。
 
 几个常用变体：
 
@@ -162,10 +161,10 @@ npm i -D @lightwiki/cli     # 或者 yarn add -D @lightwiki/cli
 npx wiki build .            # 装成依赖后命令就叫 wiki
 ```
 
-不想装依赖就一直用 `npx @lightwiki/cli@0.3.0 build .`。
+不想装依赖就一直用 `npx @lightwiki/cli@0.5.0 build .`。
 
 > 版本号建议**写死**（CI 里也一样），构建才是可复现的；升级工具时改这一处就行。
-> 别写成 `^0.3.0`：0.x 的 caret 只覆盖 `0.3.x`，下个 minor 就取不到了（这个坑踩过）。
+> 别写成 `^0.5.0`：0.x 的 caret 只覆盖 `0.5.x`，下个 minor 就取不到了（这个坑踩过）。
 > 想在本地锁定，就 `npm i -D @lightwiki/cli`，版本锁在 `package.json` 里。
 
 ---
@@ -194,7 +193,7 @@ workflow 会把仓库名注入进去：
 - name: 构建
   env:
     LIGHTWIKI_BASE_PATH: /${{ github.event.repository.name }}/
-  run: npx --yes @lightwiki/cli@0.3.0 build .
+  run: npx --yes @lightwiki/cli@0.5.0 build .
 ```
 
 所以本地是 `/`，线上自动变成 `/你的仓库名/`，**仓库改名也不用动配置**。

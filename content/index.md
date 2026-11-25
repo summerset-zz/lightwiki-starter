@@ -8,13 +8,13 @@ updated: 2026-11-17
 draft: false
 ---
 
-这一页在 `content/zh/index.md` —— **它就是站点的首页**（`/docs/`）。
+这一页在 `content/zh/index.md`，**它就是站点的首页**（`/`）。
 
 改一下这段文字，如果 `npx @lightwiki/cli dev .` 开着，浏览器会自动刷新。
 
 ## 首页没有「自动生成」这回事 {#home}
 
-`index.md` 就是 `/docs/`，写什么就是什么。两种常见玩法：
+`index.md` 就是 `/`，写什么就是什么。两种常见玩法：
 
 - 想要一张纯 HTML 的封面：给这一页配 `layout: landing`，正文留空，全部写在 `layouts/landing.eta` 里。
 - 想要「目录页」：正文里放下面两样东西，它们会按分类 / 按分组把页面列出来。

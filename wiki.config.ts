@@ -20,12 +20,8 @@ export default {
   siteUrl: 'https://example.com',
   /** 站点所在的子路径；本地是 `/`，GitHub Pages 项目站点是 `/<仓库名>/` */
   basePath: env.LIGHTWIKI_BASE_PATH ?? '/',
-  /** 默认语言的地址不带语言前缀 */
-  defaultLanguage: 'zh',
-  /** 语言 → 内容目录。加一门语言就在这里加一行 */
-  content: {
-    zh: 'content/zh',
-  },
+  /** 内容目录（相对仓库根）。整个站只有这一处，页面就是这里的 .md */
+  content: 'content',
   /** 分组顺序，就是侧栏的顺序 */
   sections: ['guide'],
   /** 分组的显示名 */
