@@ -8,7 +8,7 @@ updated: 2026-11-17
 draft: false
 ---
 
-这一页在 `content/zh/index.md`，**它就是站点的首页**（`/`）。
+这一页在 `content/index.md`，**它就是站点的首页**（`/`）。
 
 改一下这段文字，如果 `npx @lightwiki/cli dev .` 开着，浏览器会自动刷新。
 
@@ -31,6 +31,6 @@ draft: false
 
 ## 接下来 {#next}
 
-- 在 `content/zh/` 里加新的 `.md` 文件，它就是新页面；**文件名就是地址**
+- 在 `content/` 里加新的 `.md` 文件，它就是新页面；**文件名就是地址**
 - 想加分组就在 `wiki.config.ts` 的 `sections` 里加，然后页面 frontmatter 写 `section: 那组`
 - 完整语法（双链、宏、分类、代码高亮）见语法手册
