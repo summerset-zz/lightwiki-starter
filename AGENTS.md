@@ -17,7 +17,7 @@
 
 ```
 wiki.config.ts     站点配置
-content/*.md    内容，一个文件一页
+content/*.md       内容，一个文件一页
 assets/            （可选）图片、自定义样式
 layouts/           （可选）覆盖主题的皮肤，只写要改的那几个 .eta
 macros/            （可选）自定义模板
@@ -50,7 +50,6 @@ macros/            （可选）自定义模板
 | `scripts` | 否 | 只给这一页挂 JS，可写成 `[{ src: x.js, module: true }]` 或纯字符串混用 |
 | `categories` | 否 | 分类 slug，字符串、逗号分隔或数组。构建时为每个分类生成一页 |
 | `sidebarCategory` | 否 | 用某个分类的页面列表当这一页的侧栏 |
-| `hintTitle` / `hint` | 否 | 整页一个术语提示。**目前只写进页面里的 JSON，没有主题去读它** |
 | `source*` / `license*` | 否 | 整篇改编外部内容时标注出处 |
 
 - 未知字段会被放行（不报错），但不要凭空发明字段。
@@ -68,8 +67,6 @@ macros/            （可选）自定义模板
 | `{{name(...)}}` | 自定义模板，定义在 `macros/*.eta`。见下面的模板一节 |
 | `## 小节 {#anchor}` | 显式锚点，会进页内目录 |
 | `![图](/assets/x.png){.my-class}` | 给元素加属性/class（class 只是加上，样式要自己写） |
-| `<!-- source: 域名 \| 标题 \| 修订号 \| 许可证 \| 许可证地址 \| 改动说明 -->` | 只借用某几节时标注出处，六段用 `\|` 分隔，顺序固定 |
-| `<!-- hint: 标题 \| 内容 -->` | 单个术语提示，同上，没有主题消费它 |
 
 写表格、代码块、脚注、任务列表都按 CommonMark 来。代码围栏要带语言名才会高亮，内置 `js` `ts` `html` `css` `json` `bash` `yaml` `md` `diff` 等，`eta` 也有专门的着色。
 
@@ -148,15 +145,17 @@ npx @lightwiki/cli check . --strict # 红链与孤页也算失败
 | frontmatter 全部字段 | <https://summerset-zz.github.io/lightwiki/basics/frontmatter/> |
 | 正文语法（双链、锚点、HTML、class） | <https://summerset-zz.github.io/lightwiki/basics/markdown/> |
 | 模板 | <https://summerset-zz.github.io/lightwiki/basics/templates/> |
-| 皮肤 | <https://summerset-zz.github.io/lightwiki/basics/skins/> |
-| 样式与 Less | <https://summerset-zz.github.io/lightwiki/basics/styles/> |
-| JavaScript | <https://summerset-zz.github.io/lightwiki/basics/javascript/> |
+| 皮肤 | <https://summerset-zz.github.io/lightwiki/advanced/skins/> |
+| 样式与 Less | <https://summerset-zz.github.io/lightwiki/advanced/styles/> |
+| JavaScript | <https://summerset-zz.github.io/lightwiki/advanced/javascript/> |
 | 静态资源 | <https://summerset-zz.github.io/lightwiki/basics/assets/> |
 | 分类 | <https://summerset-zz.github.io/lightwiki/basics/categories/> |
-| 代码高亮 | <https://summerset-zz.github.io/lightwiki/basics/code-highlight/> |
-| 站点配置 | <https://summerset-zz.github.io/lightwiki/advanced/config/> |
-| 命令行 | <https://summerset-zz.github.io/lightwiki/advanced/cli/> |
-| 发布到 GitHub Pages | <https://summerset-zz.github.io/lightwiki/advanced/deploy-pages/> |
+| 代码高亮 | <https://summerset-zz.github.io/lightwiki/advanced/code-highlight/> |
+| 站点配置 | <https://summerset-zz.github.io/lightwiki/reference/config/> |
+| 命令行 | <https://summerset-zz.github.io/lightwiki/reference/cli/> |
+| Eta 语法 | <https://summerset-zz.github.io/lightwiki/reference/eta/> |
+| 本地打包 | <https://summerset-zz.github.io/lightwiki/deploy/build/> |
+| 发布到 GitHub Pages | <https://summerset-zz.github.io/lightwiki/deploy/pages/> |
 | 引用外部库 | <https://summerset-zz.github.io/lightwiki/advanced/external-libs/> |
 
 不确定某个模板、某个 frontmatter 字段怎么用时，先查上面这些页，不要猜。

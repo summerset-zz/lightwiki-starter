@@ -16,8 +16,13 @@ const env =
 export default {
   /** 站点名：出现在浏览器标题与侧栏顶部 */
   title: '我的知识库',
-  /** 站点完整地址：用于拼绝对链接（canonical 等） */
-  siteUrl: 'https://example.com',
+  /**
+   * 站点完整地址：用于拼绝对链接（重定向页的 canonical 与跳转地址）。
+   *
+   * CI 会用 LIGHTWIKI_SITE_URL 注入真实地址，见 .github/workflows/pages.yml。
+   * 本地预览时用不到它，留默认值即可。
+   */
+  siteUrl: env.LIGHTWIKI_SITE_URL ?? 'https://example.com',
   /** 站点所在的子路径；本地是 `/`，GitHub Pages 项目站点是 `/<仓库名>/` */
   basePath: env.LIGHTWIKI_BASE_PATH ?? '/',
   /** 内容目录（相对仓库根）。整个站只有这一处，页面就是这里的 .md */

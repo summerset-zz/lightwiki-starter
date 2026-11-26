@@ -38,10 +38,11 @@ pnpm dlx @lightwiki/cli init my-wiki
 
 ```
 my-wiki/
-├── wiki.config.ts               站点配置（标题、语言、目录、分组）
-├── content/index.md          首页（就是 /），也可以再添别的页
+├── wiki.config.ts               站点配置（标题、地址、语言、目录、分组）
+├── content/index.md             首页（就是 /），也可以再添别的页
 ├── AGENTS.md                    给 AI 助手看的写作说明（见第 2 节）
 ├── README.md                    本文件
+├── .gitignore                   忽略 dist/ 与 node_modules/
 └── .github/workflows/pages.yml  push 到 main 就构建并发布到 GitHub Pages
 ```
 
@@ -120,7 +121,7 @@ GitHub Copilot、Cursor、Codex 这类工具会自动读它，你什么都不用
 
 皮肤是一整页 HTML，模板是产出 markdown 的片段，两者都是**可选**的：不建这些目录就用默认主题；建了也只覆盖你写的那几个，升级工具时不会被冲掉。
 
-写法与能用的数据见主站：皮肤 <https://summerset-zz.github.io/lightwiki/basics/skins/>，模板 <https://summerset-zz.github.io/lightwiki/basics/templates/>。
+写法与能用的数据见主站：皮肤 <https://summerset-zz.github.io/lightwiki/advanced/skins/>，模板 <https://summerset-zz.github.io/lightwiki/basics/templates/>。
 
 ---
 
