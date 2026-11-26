@@ -66,6 +66,7 @@ macros/            （可选）自定义模板
 | `{{pages(section: guide)}}` | 主题自带：某分组下的页面列表（也支持 `category: xxx`） |
 | `{{name(...)}}` | 自定义模板，定义在 `macros/*.eta`。见下面的模板一节 |
 | `## 小节 {#anchor}` | 显式锚点，会进页内目录 |
+| `<ref>内容</ref>` | 行内引用，出一个上标；内容排到页尾（或 `<references/>` 处）。同名复用写 `<ref name="x" />` |
 | `![图](/assets/x.png){.my-class}` | 给元素加属性/class（class 只是加上，样式要自己写） |
 
 写表格、代码块、脚注、任务列表都按 CommonMark 来。代码围栏要带语言名才会高亮，内置 `js` `ts` `html` `css` `json` `bash` `yaml` `md` `diff` 等，`eta` 也有专门的着色。
