@@ -162,10 +162,10 @@ npm i -D @lightwiki/cli     # 或者 yarn add -D @lightwiki/cli
 npx wiki build .            # 装成依赖后命令就叫 wiki
 ```
 
-不想装依赖就一直用 `npx @lightwiki/cli@0.5.0 build .`。
+不想装依赖就一直用 `npx @lightwiki/cli@0.6.0 build .`。
 
 > 版本号建议**写死**（CI 里也一样），构建才是可复现的；升级工具时改这一处就行。
-> 别写成 `^0.5.0`：0.x 的 caret 只覆盖 `0.5.x`，下个 minor 就取不到了（这个坑踩过）。
+> 别写成 `^0.6.0`：0.x 的 caret 只覆盖 `0.6.x`，下个 minor 就取不到了（这个坑踩过）。
 > 想在本地锁定，就 `npm i -D @lightwiki/cli`，版本锁在 `package.json` 里。
 
 ---
@@ -194,7 +194,7 @@ workflow 会把仓库名注入进去：
 - name: 构建
   env:
     LIGHTWIKI_BASE_PATH: /${{ github.event.repository.name }}/
-  run: npx --yes @lightwiki/cli@0.5.0 build .
+  run: npx --yes @lightwiki/cli@0.6.0 build .
 ```
 
 所以本地是 `/`，线上自动变成 `/你的仓库名/`，**仓库改名也不用动配置**。

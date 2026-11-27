@@ -41,8 +41,8 @@ jobs:
           # 不传的话配置里留着 `https://example.com`，线上产物会指向那个域名。
           LIGHTWIKI_SITE_URL: https://${{ github.repository_owner }}.github.io
         # 工具版本写死，构建才是可复现的。升级时只改这一个数字。
-        # 注意别写成 ^0.5.0：0.x 的 caret 只覆盖 0.5.x，下个 minor 就取不到了。
-        run: npx --yes @lightwiki/cli@0.5.0 build .
+        # 注意别写成 ^0.6.0：0.x 的 caret 只覆盖 0.6.x，下个 minor 就取不到了。
+        run: npx --yes @lightwiki/cli@0.6.0 build .
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
